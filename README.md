@@ -14,12 +14,19 @@ Example HubSpot app for custom workflow action execution functions.
 - `src/app/workflow-actions/workflow-actions-hsmeta.json`: custom workflow action definition.
 - `src/app/functions/WorkflowActionPublicEndpoint.js`: HubSpot public app function endpoint.
 - `src/app/functions/workflow-action-public-hsmeta.json`: endpoint config for `/hs/serverless/workflow-action/public`.
-- `examples/aws-lambda/workflow-action-external-handler.js`: AWS Lambda handler that mirrors the HubSpot endpoint response.
+- `examples/aws-lambda/workflow-action-external-handler.mjs`: AWS Lambda handler that mirrors the HubSpot endpoint response.
 
 ## Endpoint URLs
 
 - External Lambda mode: paste your Lambda function URL or API Gateway URL into `External Lambda endpoint URL`.
 - Public mode: after upload, use `https://<connected-domain>/hs/serverless/workflow-action/public`.
+
+## AWS Lambda setup
+
+- Runtime: Node.js 24.x.
+- File: paste `examples/aws-lambda/workflow-action-external-handler.mjs` into `index.mjs`.
+- Handler: `index.handler`.
+- The example uses ES modules because the Lambda console creates `index.mjs` for Node.js 24.x.
 
 ## License requirement
 

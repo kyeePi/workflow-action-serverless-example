@@ -39,7 +39,7 @@ function buildResponse(payload, endpointUsed) {
   };
 }
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   const payload = parseBody(event);
 
   if (!payload.message) {

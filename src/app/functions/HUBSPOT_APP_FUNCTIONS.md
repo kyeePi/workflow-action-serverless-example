@@ -17,5 +17,5 @@ Each function component consists of two files:
 
 There are two variations:
 
-1. **Private**: These functions are only accessible from within your app
+1. **Private**: These functions are only accessible from within your app cards and UI extensions
 2. **Endpoint**: These functions are publicly available and are accessed via an exposed endpoint
