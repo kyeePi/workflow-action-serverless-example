@@ -1,0 +1,12 @@
+{
+  "uid": "workflow_action_public_endpoint",
+  "type": "app-function",
+  "config": {
+    "entrypoint": "/app/functions/WorkflowActionPublicEndpoint.js",
+    "secretKeys": [],
+    "endpoint": {
+      "path": "workflow-action/public",
+      "methods": ["POST"]
+    }
+  }
+}

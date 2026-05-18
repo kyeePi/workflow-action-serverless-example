@@ -1,0 +1,5 @@
+{
+  "name": "Workflow Action Serverless Example",
+  "srcDir": "src",
+  "platformVersion": "2026.03"
+}

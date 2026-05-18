@@ -1,0 +1,220 @@
+{
+  "uid": "serverless_mode_demo_action",
+  "type": "workflow-action",
+  "config": {
+    "actionUrl": "https://example.com/hubspot-workflow-action-placeholder",
+    "isPublished": false,
+    "supportedClients": [
+      {
+        "client": "WORKFLOWS"
+      }
+    ],
+    "objectTypes": [
+      "CONTACT",
+      "COMPANY",
+      "DEAL"
+    ],
+    "objectRequestOptions": {
+      "properties": [
+        "email",
+        "firstname",
+        "lastname",
+        "name",
+        "dealname"
+      ]
+    },
+    "inputFields": [
+      {
+        "typeDefinition": {
+          "name": "functionMode",
+          "type": "enumeration",
+          "fieldType": "select",
+          "options": [
+            {
+              "value": "external",
+              "label": "External Lambda"
+            },
+            {
+              "value": "public",
+              "label": "Public endpoint"
+            }
+          ]
+        },
+        "supportedValueTypes": [
+          "STATIC_VALUE"
+        ],
+        "isRequired": true
+      },
+      {
+        "typeDefinition": {
+          "name": "externalEndpointUrl",
+          "type": "string",
+          "fieldType": "text",
+          "helpText": "Use the HTTPS URL for the AWS Lambda endpoint."
+        },
+        "supportedValueTypes": [
+          "STATIC_VALUE"
+        ],
+        "isRequired": true
+      },
+      {
+        "typeDefinition": {
+          "name": "publicEndpointUrl",
+          "type": "string",
+          "fieldType": "text",
+          "helpText": "Requires Content Hub Enterprise. Use https://<domain>/hs/serverless/<path>."
+        },
+        "supportedValueTypes": [
+          "STATIC_VALUE"
+        ],
+        "isRequired": true
+      },
+      {
+        "typeDefinition": {
+          "name": "message",
+          "type": "string",
+          "fieldType": "textarea"
+        },
+        "supportedValueTypes": [
+          "STATIC_VALUE",
+          "OBJECT_PROPERTY"
+        ],
+        "isRequired": true,
+        "characterLimit": 1000
+      },
+      {
+        "typeDefinition": {
+          "name": "correlationId",
+          "type": "string",
+          "fieldType": "text"
+        },
+        "supportedValueTypes": [
+          "STATIC_VALUE",
+          "OBJECT_PROPERTY"
+        ],
+        "isRequired": false
+      }
+    ],
+    "inputFieldDependencies": [
+      {
+        "dependencyType": "CONDITIONAL_SINGLE_FIELD",
+        "controllingFieldName": "functionMode",
+        "controllingFieldValue": "external",
+        "dependentFieldNames": [
+          "externalEndpointUrl"
+        ]
+      },
+      {
+        "dependencyType": "CONDITIONAL_SINGLE_FIELD",
+        "controllingFieldName": "functionMode",
+        "controllingFieldValue": "public",
+        "dependentFieldNames": [
+          "publicEndpointUrl"
+        ]
+      }
+    ],
+    "outputFields": [
+      {
+        "typeDefinition": {
+          "name": "endpointMode",
+          "type": "string",
+          "fieldType": "text"
+        }
+      },
+      {
+        "typeDefinition": {
+          "name": "endpointUsed",
+          "type": "string",
+          "fieldType": "text"
+        }
+      },
+      {
+        "typeDefinition": {
+          "name": "transformedMessage",
+          "type": "string",
+          "fieldType": "text"
+        }
+      },
+      {
+        "typeDefinition": {
+          "name": "requestSummary",
+          "type": "string",
+          "fieldType": "text"
+        }
+      },
+      {
+        "typeDefinition": {
+          "name": "correlationId",
+          "type": "string",
+          "fieldType": "text"
+        }
+      },
+      {
+        "typeDefinition": {
+          "name": "responseStatus",
+          "type": "string",
+          "fieldType": "text"
+        }
+      }
+    ],
+    "labels": {
+      "en": {
+        "actionName": "Run serverless function",
+        "appDisplayName": "Serverless workflow examples",
+        "actionDescription": "Routes a workflow execution to an external Lambda endpoint or a public serverless endpoint. The public endpoint requires Content Hub Enterprise. The request and response are transformed by workflow action functions.",
+        "actionCardContent": "Run {{functionMode}} endpoint",
+        "inputFieldLabels": {
+          "functionMode": "Serverless endpoint mode",
+          "externalEndpointUrl": "External Lambda endpoint URL",
+          "publicEndpointUrl": "Public endpoint URL",
+          "message": "Message",
+          "correlationId": "Correlation ID"
+        },
+        "inputFieldDescriptions": {
+          "functionMode": "Choose which endpoint should receive the transformed workflow payload.",
+          "externalEndpointUrl": "Required for External Lambda mode. Use an HTTPS AWS Lambda function URL or API Gateway URL.",
+          "publicEndpointUrl": "Required for Public endpoint mode. Public app serverless endpoints require Content Hub Enterprise. Example: https://your-domain.com/hs/serverless/workflow-action/public.",
+          "message": "Value to send to the selected serverless endpoint after the PRE_ACTION_EXECUTION transform.",
+          "correlationId": "Optional trace ID. Defaults to HubSpot callbackId when blank."
+        },
+        "inputFieldOptionLabels": {
+          "functionMode": {
+            "external": "External Lambda",
+            "public": "Public endpoint"
+          }
+        },
+        "outputFieldLabels": {
+          "endpointMode": "Endpoint mode",
+          "endpointUsed": "Endpoint used",
+          "transformedMessage": "Transformed message",
+          "requestSummary": "Request summary",
+          "correlationId": "Correlation ID",
+          "responseStatus": "Response status"
+        },
+        "executionRules": {
+          "endpointFailed": "The selected serverless endpoint returned an error."
+        }
+      }
+    },
+    "executionRules": [
+      {
+        "labelName": "endpointFailed",
+        "conditions": {
+          "responseStatus": [
+            "error"
+          ]
+        }
+      }
+    ],
+    "functions": [
+      {
+        "functionType": "PRE_ACTION_EXECUTION",
+        "functionSource": "exports.main = function(event, callback) { var inputFields = event.inputFields || {}; var mode = inputFields.functionMode || 'external'; var endpointUrl = mode === 'public' ? inputFields.publicEndpointUrl : inputFields.externalEndpointUrl; var correlationId = inputFields.correlationId || event.callbackId || ''; var payload = { source: 'hubspot-workflow-action-example', mode: mode, correlationId: correlationId, message: inputFields.message || '', enrolledObject: { objectType: event.object && event.object.objectType, objectId: event.object && event.object.objectId, properties: event.object && event.object.properties ? event.object.properties : {} }, workflow: { callbackId: event.callbackId, origin: event.origin, context: event.context }, transform: { stage: 'PRE_ACTION_EXECUTION', description: 'HubSpot transformed the workflow execution payload before calling the selected serverless endpoint.' } }; callback({ webhookUrl: endpointUrl || event.webhookUrl, body: JSON.stringify(payload), httpHeaders: { 'X-HubSpot-Workflow-Action-Mode': mode, 'X-HubSpot-Workflow-Callback-Id': String(event.callbackId || ''), 'X-HubSpot-Workflow-Correlation-Id': String(correlationId) }, contentType: 'application/json', accept: 'application/json', httpMethod: 'POST' }); };"
+      },
+      {
+        "functionType": "POST_ACTION_EXECUTION",
+        "functionSource": "exports.main = function(event, callback) { function parseBody(value) { if (!value) { return {}; } if (typeof value === 'object') { return value; } try { return JSON.parse(value); } catch (error) { return { rawResponseBody: String(value) }; } } var response = parseBody(event.responseBody); var output = response.outputFields || response; var success = response.success !== false && !response.error; var responseKeys = Object.keys(output).filter(function(key) { return key !== 'outputFields'; }).slice(0, 10).join(','); callback({ outputFields: { hs_execution_state: success ? 'SUCCESS' : 'FAIL_CONTINUE', endpointMode: String(output.mode || output.endpointMode || ''), endpointUsed: String(output.endpointUsed || output.endpoint || ''), transformedMessage: String(output.transformedMessage || output.message || ''), requestSummary: String(output.requestSummary || ('Response keys: ' + responseKeys)), correlationId: String(output.correlationId || response.correlationId || ''), responseStatus: String(output.status || (success ? 'ok' : 'error')) } }); };"
+      }
+    ]
+  }
+}

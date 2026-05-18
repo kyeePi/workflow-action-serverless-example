@@ -1,0 +1,28 @@
+{
+  "uid": "WorkflowActionServerlessExample_app",
+  "type": "app",
+  "config": {
+    "description": "Example app that demonstrates workflow action request and response transforms with external and Content Hub Enterprise serverless endpoints.",
+    "name": "Workflow Action Serverless Example",
+    "distribution": "private",
+    "auth": {
+      "type": "static",
+      "requiredScopes": [
+        "automation"
+      ],
+      "optionalScopes": [],
+      "conditionallyRequiredScopes": []
+    },
+    "permittedUrls": {
+      "fetch": [],
+      "iframe": [],
+      "img": []
+    },
+    "support": {
+      "supportEmail": "support@example.com",
+      "documentationUrl": "https://example.com/docs",
+      "supportUrl": "https://example.com/support",
+      "supportPhone": "+18005555555"
+    }
+  }
+}
