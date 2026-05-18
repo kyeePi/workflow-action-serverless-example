@@ -6,8 +6,8 @@ Example HubSpot app for custom workflow action execution functions.
 
 - `PRE_ACTION_EXECUTION`: selects the endpoint URL and transforms the workflow execution payload before HubSpot sends it.
 - `POST_ACTION_EXECUTION`: transforms the endpoint response into workflow output fields.
-- `external` mode: sends the transformed payload to an AWS Lambda URL or API Gateway URL.
-- `public` mode: sends the transformed payload to a public serverless endpoint. This requires Content Hub Enterprise.
+- `external` mode: sends the transformed payload to a public HTTPS endpoint on an external service, such as AWS Lambda, API Gateway, Cloudflare Workers, or another serverless platform.
+- `public` mode: sends the transformed payload to a HubSpot CMS public serverless function endpoint. This requires Content Hub Enterprise.
 
 ## Files
 
@@ -18,10 +18,10 @@ Example HubSpot app for custom workflow action execution functions.
 
 ## Endpoint URLs
 
-- External Lambda mode: paste your Lambda function URL or API Gateway URL into `External Lambda endpoint URL`.
-- Public mode: after upload, use `https://<connected-domain>/hs/serverless/workflow-action/public`.
+- External mode: paste your public HTTPS endpoint into `External endpoint URL`.
+- HubSpot CMS public endpoint mode: after upload, use `https://<connected-domain>/hs/serverless/workflow-action/public`.
 
-## AWS Lambda setup
+## AWS Lambda example setup
 
 - Runtime: Node.js 24.x.
 - File: paste `examples/aws-lambda/workflow-action-external-handler.mjs` into `index.mjs`.
@@ -30,7 +30,7 @@ Example HubSpot app for custom workflow action execution functions.
 
 ## License requirement
 
-- Public app function endpoints require Content Hub Enterprise.
+- HubSpot CMS public app function endpoints require Content Hub Enterprise.
 - The workflow field description and help text state this requirement in the HubSpot workflow editor.
 
 ## Run
@@ -40,3 +40,7 @@ hs project upload
 ```
 
 The action is unpublished by default. Set `isPublished` to `true` after testing.
+
+## License
+
+0BSD. Use, copy, modify, and distribute this project for any purpose.

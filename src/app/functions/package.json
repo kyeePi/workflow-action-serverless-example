@@ -1,5 +1,6 @@
 {
   "name": "workflow-action-serverless-functions",
   "version": "0.1.0",
+  "license": "0BSD",
   "dependencies": {}
 }
