@@ -36,7 +36,7 @@
             },
             {
               "value": "public",
-              "label": "HubSpot CMS public endpoint"
+              "label": "HubSpot Public Endpoint (CMS)"
             }
           ]
         },
@@ -159,26 +159,26 @@
       "en": {
         "actionName": "Run serverless function",
         "appDisplayName": "Serverless workflow examples",
-        "actionDescription": "Routes a workflow execution to an external HTTPS service or a HubSpot CMS public serverless function endpoint. External mode can use services such as AWS Lambda, API Gateway, Cloudflare Workers, or another serverless platform. HubSpot CMS public endpoint mode requires Content Hub Enterprise. The request and response are transformed by workflow action functions.",
+        "actionDescription": "Routes a workflow execution to an external HTTPS service or a HubSpot CMS public serverless function endpoint. The request and response are transformed by workflow action functions.",
         "actionCardContent": "Run {{functionMode}}",
         "inputFieldLabels": {
           "functionMode": "Serverless endpoint mode",
           "externalEndpointUrl": "External endpoint URL",
-          "publicEndpointUrl": "HubSpot CMS public endpoint URL",
+          "publicEndpointUrl": "HubSpot Public Endpoint (CMS)",
           "message": "Message",
           "correlationId": "Correlation ID"
         },
         "inputFieldDescriptions": {
           "functionMode": "Choose which endpoint should receive the transformed workflow payload.",
           "externalEndpointUrl": "Required for External mode. Use a public HTTPS endpoint from an external service such as AWS Lambda, API Gateway, Cloudflare Workers, or another serverless platform.",
-          "publicEndpointUrl": "Required for HubSpot CMS public endpoint mode. Public app serverless endpoints require Content Hub Enterprise. Example: https://your-domain.com/hs/serverless/workflow-action/public.",
+          "publicEndpointUrl": "Required for HubSpot Public Endpoint (CMS) mode. Public app serverless endpoints require Content Hub Enterprise. Example: https://your-domain.com/hs/serverless/workflow-action/public.",
           "message": "Value to send to the selected serverless endpoint after the PRE_ACTION_EXECUTION transform.",
           "correlationId": "Optional trace ID. Defaults to HubSpot callbackId when blank."
         },
         "inputFieldOptionLabels": {
           "functionMode": {
             "external": "External",
-            "public": "HubSpot CMS public endpoint"
+            "public": "HubSpot Public Endpoint (CMS)"
           }
         },
         "outputFieldLabels": {
